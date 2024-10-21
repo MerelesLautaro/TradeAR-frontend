@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "Google ID Token: " + idToken);
 
                     // Aquí puedes enviar el ID token al servidor para validación
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 } else {

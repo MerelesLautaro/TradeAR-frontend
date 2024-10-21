@@ -1,4 +1,4 @@
-package com.lautadev.tradear;
+package com.lautadev.tradear.Activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
+import com.lautadev.tradear.R;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -65,12 +66,15 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("El GivenName es: "+credential.getGivenName());
                 System.out.println("el FamilyName es: "+credential.getFamilyName());
                 System.out.println("El email es: "+credential.getId());
+                String profilePhotoUrl = String.valueOf(credential.getProfilePictureUri());
+                System.out.println("URI profile: "+profilePhotoUrl);
                 String idToken = credential.getGoogleIdToken();
                 if (idToken != null) {
                     Log.d(TAG, "Google ID Token: " + idToken);
 
                     // Aquí puedes enviar el ID token al servidor para validación
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtra("PROFILE_PHOTO_URL", profilePhotoUrl);
                     startActivity(intent);
                     finish();
                 } else {

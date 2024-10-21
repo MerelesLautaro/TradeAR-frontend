@@ -4,15 +4,15 @@
         android:id="@+id/home"
         android:enabled="true"
         android:icon="@drawable/ic_search"
-        android:title="home" />
+        android:title="search" />
     <item
         android:id="@+id/additem"
         android:enabled="true"
         android:icon="@drawable/ic_add_box"
-        android:title="addItem" />
+        android:title="add item" />
     <item
         android:id="@+id/profile"
         android:enabled="true"
-        android:icon="@drawable/ic_add_box"
+        android:icon="@drawable/ic_default_profile"
         android:title="profile" />
 </menu>

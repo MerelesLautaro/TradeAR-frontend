@@ -2,7 +2,11 @@ package com.lautadev.tradear.Activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +27,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -45,6 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        // Configuración del ViewPager y TabLayout
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -52,7 +56,23 @@ public class ProfileActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabLayout);
         tabs.setupWithViewPager(viewPager);
 
-        tabs.getTabAt(0).setText("Inventario");
-        tabs.getTabAt(1).setText("Guardados");
+        // Personalizar los tabs
+        setupTab(tabs.getTabAt(0), "Inventario", R.drawable.ic_inventory);
+        setupTab(tabs.getTabAt(1), "Guardados", R.drawable.ic_bookmark);
+    }
+
+    private void setupTab(TabLayout.Tab tab, String title, int iconResId) {
+        if (tab != null) {
+            // Inflar el layout personalizado
+            View tabView = LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+            TextView tabText = tabView.findViewById(R.id.tabText);
+            ImageView tabIcon = tabView.findViewById(R.id.tabIcon);
+
+            tabText.setText(title);
+            tabIcon.setImageResource(iconResId);
+
+            // Asignar la vista personalizada al tab
+            tab.setCustomView(tabView);
+        }
     }
 }

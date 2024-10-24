@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@color/black">
+
+    <ImageView
+        android:id="@+id/image_post"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/text_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Lautaro Mereles"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_bookmark"
+            android:paddingTop="0dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBaseline="@id/text_user" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="lorem asdasdasdasdasdasdasdasdasdasasdasdasdasdasdasdasdasdasasdasdas"
+        android:textColor="@color/white"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="24/10/2024"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+</LinearLayout>

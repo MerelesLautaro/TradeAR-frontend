@@ -13,6 +13,15 @@ import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
 import com.lautadev.tradear.R;
+import com.lautadev.tradear.model.GoogleUserInfo;
+import com.lautadev.tradear.network.ConfigAuthenticationControllerAPIClient;
+import com.lautadev.tradear.repository.AuthenticationAPIClient;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -20,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
+    private AuthenticationAPIClient authenticationAPIClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +45,9 @@ public class LoginActivity extends AppCompatActivity {
                         .build())
                 .build();
 
-        // Inicializa el cliente de Google Identity
         oneTapClient = Identity.getSignInClient(this);
+
+        authenticationAPIClient = ConfigAuthenticationControllerAPIClient.getClient().create(AuthenticationAPIClient.class);
 
         // Llamar al método para iniciar el proceso de sign-in
         signInWithGoogle();
@@ -63,20 +74,23 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK) {
             try {
                 SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
-                System.out.println("El GivenName es: "+credential.getGivenName());
-                System.out.println("el FamilyName es: "+credential.getFamilyName());
-                System.out.println("El email es: "+credential.getId());
-                String profilePhotoUrl = String.valueOf(credential.getProfilePictureUri());
-                System.out.println("URI profile: "+profilePhotoUrl);
+
+                // Obtener ID token
                 String idToken = credential.getGoogleIdToken();
+
                 if (idToken != null) {
                     Log.d(TAG, "Google ID Token: " + idToken);
 
-                    // Aquí puedes enviar el ID token al servidor para validación
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("PROFILE_PHOTO_URL", profilePhotoUrl);
-                    startActivity(intent);
-                    finish();
+                    // Crear el objeto GoogleUserInfo y enviar al servidor
+                    GoogleUserInfo googleUserInfo = new GoogleUserInfo();
+                    googleUserInfo.setId(idToken);
+                    googleUserInfo.setName(credential.getGivenName());
+                    googleUserInfo.setLastname(credential.getFamilyName());
+                    googleUserInfo.setEmail(credential.getId());
+
+                    // Llamar al endpoint /auth/login-google
+                    loginWithGoogle(googleUserInfo);
+
                 } else {
                     Log.e(TAG, "ID token es null");
                 }
@@ -88,12 +102,44 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // Método para cerrar sesión
+    private void loginWithGoogle(GoogleUserInfo googleUserInfo) {
+        Call<String> call = authenticationAPIClient.loginWithGoogle(googleUserInfo);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                System.out.println("La respuesta es: "+response);
+                // uso del JWT creado omitido momentaneamente por cuestiones de practicidad
+                if (response.code() == 200 || response.code() == 401){
+                    Log.d(TAG, "Usuario autenticado exitosamente con Google");
+
+                    // Navegar a la HomeActivity después del login exitoso
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtra("PROFILE_PHOTO_URL", googleUserInfo.getEmail());
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Log.e(TAG, "Falló la autenticación: " + response.message());
+                    Log.e(TAG, "Código de respuesta: " + response.code());
+                    if (response.errorBody() != null) {
+                        try {
+                            Log.e(TAG, "Error del servidor: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            Log.e(TAG, "Error al leer el cuerpo de error", e);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e(TAG, "Error en la llamada al servidor", t);
+            }
+        });
+    }
+
     public void signOut() {
         oneTapClient.signOut().addOnCompleteListener(task -> {
-            // Cerrar sesión fue exitoso
             Log.d(TAG, "Sign-out successful");
         });
     }
 }
-

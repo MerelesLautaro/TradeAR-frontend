@@ -1,22 +1,22 @@
-package com.lautadev.tradear.model;
+package com.lautadev.tradear.dto;
 
 import java.time.LocalDate;
+import java.util.Date;
 
-public class Item {
+public class ItemDTO {
     private Long id;
     private String name;
     private String description;
-    private LocalDate date;
+    private Date date;
     private String link;
     private int amount;
-    private Category category;
+    private String category;
+    private UserSecDTO userSecDTO;
 
-    private Inventory inventory;
-
-    public Item() {
+    public ItemDTO() {
     }
 
-    public Item(Long id, String name, String description, LocalDate date, String link, int amount, Category category, Inventory inventory) {
+    public ItemDTO(Long id, String name, String description, Date date, String link, int amount, String category, UserSecDTO userSecDTO) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -24,7 +24,7 @@ public class Item {
         this.link = link;
         this.amount = amount;
         this.category = category;
-        this.inventory = inventory;
+        this.userSecDTO = userSecDTO;
     }
 
     public Long getId() {
@@ -51,11 +51,11 @@ public class Item {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -75,19 +75,19 @@ public class Item {
         this.amount = amount;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public UserSecDTO getUserSecDTO() {
+        return userSecDTO;
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
+    public void setUserSecDTO(UserSecDTO userSecDTO) {
+        this.userSecDTO = userSecDTO;
     }
 }

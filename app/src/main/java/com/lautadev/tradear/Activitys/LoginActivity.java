@@ -14,7 +14,7 @@ import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
 import com.lautadev.tradear.R;
 import com.lautadev.tradear.model.GoogleUserInfo;
-import com.lautadev.tradear.network.ConfigAuthenticationControllerAPIClient;
+import com.lautadev.tradear.network.RetrofitClient;
 import com.lautadev.tradear.repository.AuthenticationAPIClient;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         oneTapClient = Identity.getSignInClient(this);
 
-        authenticationAPIClient = ConfigAuthenticationControllerAPIClient.getClient().create(AuthenticationAPIClient.class);
+        authenticationAPIClient = RetrofitClient.getClient().create(AuthenticationAPIClient.class);
 
         // Llamar al método para iniciar el proceso de sign-in
         signInWithGoogle();
@@ -81,15 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (idToken != null) {
                     Log.d(TAG, "Google ID Token: " + idToken);
 
-                    // Crear el objeto GoogleUserInfo y enviar al servidor
-                    GoogleUserInfo googleUserInfo = new GoogleUserInfo();
-                    googleUserInfo.setId(idToken);
-                    googleUserInfo.setName(credential.getGivenName());
-                    googleUserInfo.setLastname(credential.getFamilyName());
-                    googleUserInfo.setEmail(credential.getId());
-
                     // Llamar al endpoint /auth/login-google
-                    loginWithGoogle(googleUserInfo);
+                    loginWithGoogle(credential);
 
                 } else {
                     Log.e(TAG, "ID token es null");
@@ -102,7 +95,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void loginWithGoogle(GoogleUserInfo googleUserInfo) {
+    private void loginWithGoogle(SignInCredential credential) {
+        // Crear el objeto GoogleUserInfo y enviar al servidor
+        GoogleUserInfo googleUserInfo = new GoogleUserInfo();
+        googleUserInfo.setId(credential.getGoogleIdToken());
+        googleUserInfo.setName(credential.getGivenName());
+        googleUserInfo.setLastname(credential.getFamilyName());
+        googleUserInfo.setEmail(credential.getId());
+
         Call<String> call = authenticationAPIClient.loginWithGoogle(googleUserInfo);
         call.enqueue(new Callback<String>() {
             @Override
@@ -114,7 +114,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     // Navegar a la HomeActivity después del login exitoso
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("PROFILE_PHOTO_URL", googleUserInfo.getEmail());
+                    intent.putExtra("EMAIL", credential.getId());
+                    intent.putExtra("NAME",credential.getGivenName());
+                    intent.putExtra("LASTNAME",credential.getFamilyName());
                     startActivity(intent);
                     finish();
                 } else {

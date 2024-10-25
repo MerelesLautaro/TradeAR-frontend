@@ -1,6 +1,5 @@
 package com.lautadev.tradear.Adapters;
 
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.lautadev.tradear.R;
-import com.lautadev.tradear.model.Item;
-
-import java.time.format.DateTimeFormatter;
+import com.lautadev.tradear.dto.ItemDTO;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
-    private List<Item> itemList;
+    private List<ItemDTO> itemList;
 
-    public GalleryAdapter(List<Item> postList) {
+    public GalleryAdapter(List<ItemDTO> postList) {
         this.itemList = postList;
     }
 
@@ -33,17 +32,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Item item = itemList.get(position);
-        Glide.with(holder.itemView.getContext()).load(item.getUrlImg()).into(holder.imagePost);
-        holder.textUser.setText(item.getUser());
-        holder.textDescription.setText(item.getDescription());
-        DateTimeFormatter formatter = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            holder.textDate.setText(item.getDate().format(formatter));
-        }
+        ItemDTO itemDTO = itemList.get(position);
+        Glide.with(holder.itemView.getContext()).load(itemDTO.getLink()).into(holder.imagePost);
+        holder.textUser.setText(itemDTO.getUserSecDTO().getName() + " " + itemDTO.getUserSecDTO().getLastname());
+        holder.textDescription.setText(itemDTO.getDescription());
+
+        // Formatear la fecha usando SimpleDateFormat
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+        String formattedDate = formatter.format(itemDTO.getDate());
+        holder.textDate.setText(formattedDate);
     }
 
     @Override

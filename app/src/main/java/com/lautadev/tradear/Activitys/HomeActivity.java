@@ -1,6 +1,7 @@
 package com.lautadev.tradear.Activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -45,7 +46,6 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.home) {
-                // No es necesario reiniciar la actividad
                 return true;
             } else if (itemId == R.id.additem) {
                 Intent qrIntent = new Intent(HomeActivity.this, AddItemActivity.class);
@@ -59,7 +59,9 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         });
 
-        String email = getIntent().getStringExtra("EMAIL");
+        // Recuperar el EMAIL del usuario desde SharedPreferences
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String email = sharedPreferences.getString("EMAIL",null);
         loadGallery(email);
     }
 
@@ -75,6 +77,13 @@ public class HomeActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     UserSecDTO user = response.body();
                     Long userId = user.getId();
+
+                    // Almacenar el ID en SharedPreferences
+                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putLong("userId", userId);
+                    editor.apply();
+
                     // Obtener ítems que no pertenecen al usuario
                     loadItemsNotBelongingToUser(userId);
                 } else {

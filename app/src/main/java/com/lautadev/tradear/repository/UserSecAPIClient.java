@@ -22,7 +22,7 @@ public interface UserSecAPIClient {
     Call<List<UserSec>> getUsers();
 
     @GET("/user/get/{id}")
-    Call<UserSec> findUser(@Path("id") Long id);
+    Call<UserSecDTO> findUser(@Path("id") Long id);
 
     @GET("/user/get/findByEmail")
     Call<UserSecDTO> findUserByEmail(@Query("email") String email);

@@ -46,8 +46,6 @@ public class AddItemActivity extends AppCompatActivity {
                     startActivity(homeIntent);
                     return true;
                 } else if (itemId == R.id.additem) {
-                    Intent opcionesIntent = new Intent(AddItemActivity.this, AddItemActivity.class);
-                    startActivity(opcionesIntent);
                     return true;
                 } else if (itemId == R.id.profile) {
                     Intent opcionesIntent = new Intent(AddItemActivity.this, ProfileActivity.class);

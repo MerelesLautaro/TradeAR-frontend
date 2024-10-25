@@ -1,6 +1,7 @@
 package com.lautadev.tradear.Activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -112,9 +113,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.code() == 200 || response.code() == 401){
                     Log.d(TAG, "Usuario autenticado exitosamente con Google");
 
+                    // Almacenar el EMAIL y URL picture en SharedPreferences
+                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("EMAIL", credential.getId());
+                    editor.putString("url_picture", credential.getProfilePictureUri().toString());
+                    System.out.println("URL picture: "+credential.getProfilePictureUri());
+                    editor.apply();
+
                     // Navegar a la HomeActivity después del login exitoso
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("EMAIL", credential.getId());
                     intent.putExtra("NAME",credential.getGivenName());
                     intent.putExtra("LASTNAME",credential.getFamilyName());
                     startActivity(intent);

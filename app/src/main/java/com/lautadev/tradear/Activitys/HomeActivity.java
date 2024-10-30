@@ -14,7 +14,6 @@ import com.lautadev.tradear.Adapters.GalleryAdapter;
 import com.lautadev.tradear.R;
 import com.lautadev.tradear.dto.ItemDTO;
 import com.lautadev.tradear.dto.UserSecDTO;
-import com.lautadev.tradear.model.UserSec;
 import com.lautadev.tradear.network.RetrofitClient;
 import com.lautadev.tradear.repository.ItemAPIClient;
 import com.lautadev.tradear.repository.UserSecAPIClient;
@@ -101,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
     private void loadItemsNotBelongingToUser(Long userId) {
 
         itemAPIClient = RetrofitClient.getClient().create(ItemAPIClient.class);
-        itemAPIClient.indItemsNotBelongingToUser(userId).enqueue(new Callback<List<ItemDTO>>() {
+        itemAPIClient.findItemsNotBelongingToUser(userId).enqueue(new Callback<List<ItemDTO>>() {
             @Override
             public void onResponse(Call<List<ItemDTO>> call, Response<List<ItemDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {

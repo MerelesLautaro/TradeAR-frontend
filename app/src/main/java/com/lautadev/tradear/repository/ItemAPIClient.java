@@ -22,7 +22,10 @@ public interface ItemAPIClient {
     Call<ItemDTO> findItem(@Path("id") Long id);
 
     @GET("/item/get/findItemsNotBelongingToUser/{id}")
-    Call<List<ItemDTO>> indItemsNotBelongingToUser(@Path("id") Long id);
+    Call<List<ItemDTO>> findItemsNotBelongingToUser(@Path("id") Long id);
+
+    @GET("/item/get/findItemsBelongingToUser/{id}")
+    Call<List<ItemDTO>> findItemsBelongingToUser(@Path("id") Long id);
 
     @DELETE("/item/delete/{id}")
     Call<String> deleteItem(@Path("id") Long id);

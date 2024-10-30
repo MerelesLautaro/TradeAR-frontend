@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.lautadev.tradear.fragments.BookmarksFragment;
-import com.lautadev.tradear.fragments.InventoryFragment;
+import com.lautadev.tradear.fragments.ProfileFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public SectionsPagerAdapter(FragmentManager fm) {
@@ -18,7 +18,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new InventoryFragment();
+                return new ProfileFragment();
             case 1:
                 return new BookmarksFragment();
             default:
@@ -28,6 +28,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2; // Dos tabs
+        return 2;
     }
 }

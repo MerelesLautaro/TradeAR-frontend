@@ -22,11 +22,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Lautaro Mereles"
+            android:text=""
             android:textColor="@color/white"
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/btnBookmark"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="@drawable/ic_bookmark"
@@ -42,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="lorem asdasdasdasdasdasdasdasdasdasasdasdasdasdasdasdasdasdasasdasdas"
+        android:text=""
         android:textColor="@color/white"
         android:maxLines="2"
         android:ellipsize="end" />
@@ -52,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="24/10/2024"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="12sp" />
 

@@ -24,6 +24,7 @@ import com.lautadev.tradear.R;
 import com.lautadev.tradear.dto.UserSecDTO;
 import com.lautadev.tradear.network.RetrofitClient;
 import com.lautadev.tradear.repository.UserSecAPIClient;
+import com.lautadev.tradear.utils.ItemCountManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
-    private TextView txtUsernameOptions, txtPosting, txtUsername;
+    private TextView txtUsernameOptions, txtUsername, txtPosting;
 
     private ImageView imgProfile;
 
@@ -96,6 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
             Call<UserSecDTO> userSecDTOCall = userSecAPIClient.findUser(userId);
             txtUsernameOptions = findViewById(R.id.txtUsernameOptions);
             txtUsername = findViewById(R.id.txtUsername);
+            txtPosting = findViewById(R.id.txtPosting);
 
             userSecDTOCall.enqueue(new Callback<UserSecDTO>() {
                 @Override
@@ -104,6 +106,8 @@ public class ProfileActivity extends AppCompatActivity {
                         UserSecDTO userSecDTO = response.body();
                         txtUsernameOptions.setText(userSecDTO.getName()+"."+userSecDTO.getLastname());
                         txtUsername.setText(userSecDTO.getName()+"  "+userSecDTO.getLastname());
+                        int itemCount = ItemCountManager.getInstance().getItemCount();
+                        txtPosting.setText(itemCount+" Publicaciones");
                     } else {
                         Toast.makeText(ProfileActivity.this, "Error trying to find user data", Toast.LENGTH_SHORT).show();
                     }

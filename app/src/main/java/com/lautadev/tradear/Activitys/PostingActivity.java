@@ -1,5 +1,6 @@
 package com.lautadev.tradear.Activitys;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +17,11 @@ import com.lautadev.tradear.dto.ItemDTO;
 import com.lautadev.tradear.network.RetrofitClient;
 import com.lautadev.tradear.repository.ItemAPIClient;
 
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,23 +71,25 @@ public class PostingActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUI(ItemDTO item) {
+    private void updateUI(ItemDTO itemDTO) {
         // Referencias a las vistas
         ImageView imagePost = findViewById(R.id.image_post);
         TextView textUser = findViewById(R.id.text_user);
         TextView textDescription = findViewById(R.id.text_description);
         TextView textDate = findViewById(R.id.text_date);
+        TextView textNameItem = findViewById(R.id.text_name_item);
 
         // Cargar la imagen utilizando Glide
         Glide.with(this)
-                .load(item.getLink())
+                .load(itemDTO.getLink())
                 .into(imagePost);
 
-        // Actualizar el texto de usuario, descripción y fecha
-        textUser.setText(item.getUserSecDTO().getName());
-        textDescription.setText(item.getDescription());
-        String date = String.valueOf(item.getDate());
-        textDate.setText(date);
+        textNameItem.setText(itemDTO.getName());
+        textUser.setText(itemDTO.getUserSecDTO().getName());
+        textDescription.setText(itemDTO.getDescription());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+        String formattedDate = formatter.format(itemDTO.getDate());
+        textDate.setText(formattedDate);
 
     }
 }

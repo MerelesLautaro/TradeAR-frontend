@@ -45,9 +45,12 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.profile_activity);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Establecer el ítem seleccionado para este Activity
+        bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -55,10 +58,12 @@ public class ProfileActivity extends AppCompatActivity {
                 if (itemId == R.id.home) {
                     Intent homeIntent = new Intent(ProfileActivity.this, HomeActivity.class);
                     startActivity(homeIntent);
+                    finish();
                     return true;
                 } else if (itemId == R.id.additem) {
                     Intent qrIntent = new Intent(ProfileActivity.this, AddItemActivity.class);
                     startActivity(qrIntent);
+                    finish();
                     return true;
                 } else if (itemId == R.id.profile) {
                     return true;

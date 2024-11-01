@@ -74,7 +74,6 @@ public class PostingActivity extends AppCompatActivity {
     private void updateUI(ItemDTO itemDTO) {
         // Referencias a las vistas
         ImageView imagePost = findViewById(R.id.image_post);
-        TextView textUser = findViewById(R.id.text_user);
         TextView textDescription = findViewById(R.id.text_description);
         TextView textDate = findViewById(R.id.text_date);
         TextView textNameItem = findViewById(R.id.text_name_item);
@@ -85,9 +84,8 @@ public class PostingActivity extends AppCompatActivity {
                 .into(imagePost);
 
         textNameItem.setText(itemDTO.getName());
-        textUser.setText(itemDTO.getUserSecDTO().getName());
         textDescription.setText(itemDTO.getDescription());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
         String formattedDate = formatter.format(itemDTO.getDate());
         textDate.setText(formattedDate);
 

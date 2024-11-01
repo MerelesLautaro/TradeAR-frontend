@@ -15,18 +15,18 @@ import com.lautadev.tradear.R;
 public class AddItemActivity extends AppCompatActivity {
 
     private Button btnBack;
-
     private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_item);
+        setContentView(R.layout.add_item_activity);
 
         btnBack = findViewById(R.id.btn_back);
-
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+        // Establecer el ítem seleccionado para este Activity
+        bottomNavigationView.setSelectedItemId(R.id.additem);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,12 +44,14 @@ public class AddItemActivity extends AppCompatActivity {
                 if (itemId == R.id.home) {
                     Intent homeIntent = new Intent(AddItemActivity.this, HomeActivity.class);
                     startActivity(homeIntent);
+                    finish();
                     return true;
                 } else if (itemId == R.id.additem) {
                     return true;
                 } else if (itemId == R.id.profile) {
                     Intent opcionesIntent = new Intent(AddItemActivity.this, ProfileActivity.class);
                     startActivity(opcionesIntent);
+                    finish();
                     return true;
                 }
                 return false;

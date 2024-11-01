@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_activity);
 
         // Configuración de One Tap Sign-In request
         signInRequest = BeginSignInRequest.builder()

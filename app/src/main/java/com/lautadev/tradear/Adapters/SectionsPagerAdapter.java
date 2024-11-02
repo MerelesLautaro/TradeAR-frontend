@@ -9,7 +9,7 @@ import com.lautadev.tradear.fragments.BookmarksFragment;
 import com.lautadev.tradear.fragments.ProfileFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
-    public SectionsPagerAdapter(FragmentManager fm) {
+    public SectionsPagerAdapter(FragmentManager fm, boolean b) {
         super(fm);
     }
 
@@ -18,7 +18,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new ProfileFragment();
+                return new ProfileFragment(true);
             case 1:
                 return new BookmarksFragment();
             default:

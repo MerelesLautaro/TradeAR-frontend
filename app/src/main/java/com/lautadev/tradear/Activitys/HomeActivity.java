@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
-        adapter = new GalleryAdapter(itemList);
+        adapter = new GalleryAdapter(this,itemList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +30,13 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerView;
     private ImageGridAdapter imageGridAdapter;
     private List<ItemDTO> itemList = new ArrayList<>();
+    private List<ItemDTO> selectedItems = new ArrayList<>();
     private ItemAPIClient itemAPIClient;
+    private boolean shouldRedirect;
+
+    public ProfileFragment(boolean shouldRedirect) {
+        this.shouldRedirect = shouldRedirect;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,8 +65,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<List<ItemDTO>> call, Response<List<ItemDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    itemList = response.body();
-                    updateUI(); // Actualiza la interfaz de usuario con los nuevos datos
+                    List<ItemDTO> itemList = response.body();
+                    updateUI(itemList);
+                } else {
+                    Log.e("ProfileFragment", "Error: respuesta no exitosa");
                 }
             }
 
@@ -72,9 +79,10 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void updateUI() {
+    private void updateUI(List<ItemDTO> itemList) {
         if (imageGridAdapter == null) {
-            imageGridAdapter = new ImageGridAdapter(getContext(), itemList);
+            // Pasar false para shouldRedirect
+            imageGridAdapter = new ImageGridAdapter(getContext(), itemList, shouldRedirect,selectedItems);
             recyclerView.setAdapter(imageGridAdapter);
         } else {
             // Actualiza la lista y notifica al adaptador

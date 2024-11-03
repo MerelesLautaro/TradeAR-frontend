@@ -5,15 +5,17 @@ public class GoogleUserInfo {
     private String email;
     private String name;
     private String lastname;
+    private String pictureUrl;
 
     public GoogleUserInfo() {
     }
 
-    public GoogleUserInfo(String idToken, String email, String name, String lastname) {
-        this.id = idToken;
+    public GoogleUserInfo(String id, String email, String name, String lastname, String pictureUrl) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.lastname = lastname;
+        this.pictureUrl = pictureUrl;
     }
 
     public String getId() {
@@ -46,5 +48,13 @@ public class GoogleUserInfo {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 }

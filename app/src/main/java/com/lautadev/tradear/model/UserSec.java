@@ -7,6 +7,8 @@ public class UserSec {
     private String name;
     private String lastname;
     private String email;
+
+    private String pictureUrl;
     private Account account;
     private List<Exchange> exchanges;
     private List<Message> messages;
@@ -15,11 +17,12 @@ public class UserSec {
     public UserSec() {
     }
 
-    public UserSec(Long id, String name, String lastname, String email, Account account, List<Exchange> exchanges, List<Message> messages, Inventory inventory) {
+    public UserSec(Long id, String name, String lastname, String email, String pictureUrl, Account account, List<Exchange> exchanges, List<Message> messages, Inventory inventory) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.email = email;
+        this.pictureUrl = pictureUrl;
         this.account = account;
         this.exchanges = exchanges;
         this.messages = messages;
@@ -56,6 +59,14 @@ public class UserSec {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     public Account getAccount() {

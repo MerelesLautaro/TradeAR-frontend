@@ -103,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         googleUserInfo.setName(credential.getGivenName());
         googleUserInfo.setLastname(credential.getFamilyName());
         googleUserInfo.setEmail(credential.getId());
+        googleUserInfo.setPictureUrl(String.valueOf(credential.getProfilePictureUri()));
 
         Call<String> call = authenticationAPIClient.loginWithGoogle(googleUserInfo);
         call.enqueue(new Callback<String>() {

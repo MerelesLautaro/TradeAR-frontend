@@ -35,14 +35,6 @@
             android:layout_toEndOf="@id/txtUsernameOptions"
             android:background="@drawable/ic_arrow_down" />
 
-        <Button
-            android:id="@+id/btnMessages"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_message_black" />
-
     </RelativeLayout>
 
     <!-- Board del perfil -->
@@ -56,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/infoUserLayout">
 
         <ImageView
-            android:id="@+id/imgProfile"
+            android:id="@+id/img_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -70,7 +62,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="64dp"
             android:layout_marginTop="32dp"
-            android:layout_toEndOf="@id/imgProfile"
+            android:layout_toEndOf="@id/img_profile"
             android:text="10 Publicaciones"
             android:textColor="@color/white"
             android:textSize="20dp" />
@@ -79,7 +71,7 @@
             android:id="@+id/txtUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imgProfile"
+            android:layout_below="@id/img_profile"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:text="Name Lastname"

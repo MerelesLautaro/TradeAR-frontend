@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,10 +37,20 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<ItemDTO> itemList = new ArrayList<>();
 
+    private Button btnMessages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
+
+        btnMessages = findViewById(R.id.btnMessages);
+
+        btnMessages.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, MessageActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {

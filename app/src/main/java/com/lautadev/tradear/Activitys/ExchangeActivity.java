@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.lautadev.tradear.R;
 import com.lautadev.tradear.dto.ExchangeDTO;
@@ -175,6 +177,7 @@ public class ExchangeActivity extends AppCompatActivity implements OnItemsSelect
     }
 
     private void updateUI(ItemDTO item) {
+        ImageView imageUser = findViewById(R.id.img_profile);
         ImageView imagePost = findViewById(R.id.image_post);
         TextView textNameItem = findViewById(R.id.text_name_item);
         TextView textDescription = findViewById(R.id.text_description);
@@ -182,6 +185,11 @@ public class ExchangeActivity extends AppCompatActivity implements OnItemsSelect
         TextView textUser = findViewById(R.id.text_user);
 
         // Cargar la imagen utilizando Glide
+        Glide.with(this)
+                        .load(item.getUserSecDTO().getPictureUrl())
+                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(100)))
+                        .into(imageUser);
+
         Glide.with(this)
                 .load(item.getLink())
                 .into(imagePost);

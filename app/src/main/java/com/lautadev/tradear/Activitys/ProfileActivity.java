@@ -2,7 +2,6 @@ package com.lautadev.tradear.Activitys;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,7 +38,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ImageView imgProfile;
 
-    private Button btnMessages, btnDropOptins;
 
     private UserSecAPIClient userSecAPIClient;
 
@@ -83,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        imgProfile = findViewById(R.id.imgProfile);
+        imgProfile = findViewById(R.id.img_profile);
 
         // Recuperar la URL picture desde SharedPreferences
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);

@@ -5,16 +5,18 @@ public class UserSecDTO {
     private String name;
     private String lastname;
     private String email;
+    private String pictureUrl;
     private int itemCount;
 
     public UserSecDTO() {
     }
 
-    public UserSecDTO(Long id, String name, String lastname, String email, int itemCount) {
+    public UserSecDTO(Long id, String name, String lastname, String email, String pictureUrl, int itemCount) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.email = email;
+        this.pictureUrl = pictureUrl;
         this.itemCount = itemCount;
     }
 
@@ -56,5 +58,13 @@ public class UserSecDTO {
 
     public void setItemCount(int itemCount) {
         this.itemCount = itemCount;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 }

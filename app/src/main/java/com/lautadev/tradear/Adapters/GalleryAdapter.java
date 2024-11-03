@@ -13,13 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.lautadev.tradear.Activitys.ExchangeActivity;
 import com.lautadev.tradear.R;
 import com.lautadev.tradear.dto.ItemDTO;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private List<ItemDTO> itemList;
@@ -40,14 +40,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemDTO itemDTO = itemList.get(position);
+        Glide.with(holder.itemView.getContext())
+                .load(itemDTO.getUserSecDTO().getPictureUrl())
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(100)))
+                .into(holder.imageProfile);
         Glide.with(holder.itemView.getContext()).load(itemDTO.getLink()).into(holder.imagePost);
         holder.textUser.setText(itemDTO.getUserSecDTO().getName() + " " + itemDTO.getUserSecDTO().getLastname());
         holder.textDescription.setText(itemDTO.getDescription());
         holder.txtNameItem.setText(itemDTO.getName());
 
-        // Formatear la fecha usando SimpleDateFormat
-       // SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-       // String formattedDate = formatter.format(itemDTO.getDate());
         holder.textDate.setText(itemDTO.getDate());
 
         // Configurar el listener para el botón "btnExchange"
@@ -64,12 +65,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imagePost;
+        ImageView imagePost, imageProfile;
         TextView textUser, textDescription, textDate, txtNameItem;
         Button btnExchange;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            imageProfile = itemView.findViewById(R.id.img_profile);
             imagePost = itemView.findViewById(R.id.image_post);
             textUser = itemView.findViewById(R.id.text_user);
             textDescription = itemView.findViewById(R.id.text_description);

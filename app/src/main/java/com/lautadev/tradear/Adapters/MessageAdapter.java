@@ -1,5 +1,6 @@
 package com.lautadev.tradear.Adapters;
 
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lautadev.tradear.R;
 import com.lautadev.tradear.dto.MessageDTO;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
@@ -38,7 +43,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         MessageDTO message = messages.get(position);
-        holder.bind(message,userId);
+        try {
+            holder.bind(message,userId);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -49,6 +58,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         private final TextView messageContentReceived;
         private final TextView messageContentSent;
+        private final TextView messageTimeReceived;
+        private final TextView messageTimeSent;
         private final LinearLayout messageBubbleReceived;
         private final LinearLayout messageBubbleSent;
         private final ImageView profileImageView;
@@ -57,24 +68,39 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             super(itemView);
             messageContentReceived = itemView.findViewById(R.id.messageContentReceived);
             messageContentSent = itemView.findViewById(R.id.messageContentSent);
+            messageTimeReceived = itemView.findViewById(R.id.messageTimeReceived);
+            messageTimeSent = itemView.findViewById(R.id.messageTimeSent);
             messageBubbleReceived = itemView.findViewById(R.id.messageBubbleReceived);
             messageBubbleSent = itemView.findViewById(R.id.messageBubbleSent);
             profileImageView = itemView.findViewById(R.id.profileImageView);
         }
 
-        public void bind(MessageDTO message, Long userId) {
-            if (message.getSender().getId() == userId) {
-                messageBubbleSent.setVisibility(View.VISIBLE);
-                messageBubbleReceived.setVisibility(View.GONE);
-                messageContentSent.setText(message.getContent());
-            } else {
-                messageBubbleReceived.setVisibility(View.VISIBLE);
-                messageBubbleSent.setVisibility(View.GONE);
-                messageContentReceived.setText(message.getContent());
-                Glide.with(itemView.getContext())
-                        .load(message.getSender().getPictureUrl())
-                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(100)))
-                        .into(profileImageView);
+        public void bind(MessageDTO message, Long userId) throws ParseException {
+            String timestamp = message.getTimestamp(); // El timestamp como String
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            try {
+                Date date = inputFormat.parse(timestamp);
+                String formattedTime = outputFormat.format(date);
+
+                if (message.getSender().getId() == userId) {
+                    messageBubbleSent.setVisibility(View.VISIBLE);
+                    messageBubbleReceived.setVisibility(View.GONE);
+                    messageTimeSent.setText(formattedTime);
+                    messageContentSent.setText(message.getContent());
+                } else {
+                    messageBubbleReceived.setVisibility(View.VISIBLE);
+                    messageBubbleSent.setVisibility(View.GONE);
+                    messageTimeReceived.setText(formattedTime);
+                    messageContentReceived.setText(message.getContent());
+                    Glide.with(itemView.getContext())
+                            .load(message.getSender().getPictureUrl())
+                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(100)))
+                            .into(profileImageView);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

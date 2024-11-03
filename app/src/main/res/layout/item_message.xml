@@ -12,7 +12,9 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginEnd="8dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
     <!-- Globo de texto para mensaje recibido -->
     <LinearLayout
@@ -24,7 +26,8 @@
         android:layout_toEndOf="@id/profileImageView"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginTop="4dp">
+        android:layout_marginTop="4dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/messageContentReceived"
@@ -32,25 +35,46 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="¿Todo bien?" />
+
+        <!-- TextView para la hora del mensaje recibido -->
+        <TextView
+            android:id="@+id/messageTimeReceived"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_white"
+            android:text=""
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 
     <!-- Globo de texto para mensaje enviado -->
     <LinearLayout
-            android:id="@+id/messageBubbleSent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/message_bubble_sent"
-            android:padding="10dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="4dp"
-            android:visibility="gone">
+        android:id="@+id/messageBubbleSent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/message_bubble_sent"
+        android:padding="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/messageContentSent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white" />
+
+        <!-- TextView para la hora del mensaje enviado -->
+        <TextView
+            android:id="@+id/messageTimeSent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_white"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="end"/>
     </LinearLayout>
 </RelativeLayout>

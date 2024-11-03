@@ -137,6 +137,14 @@ public class ExchangeActivity extends AppCompatActivity implements OnItemsSelect
             public void onResponse(Call<ExchangeDTO> call, Response<ExchangeDTO> response) {
                 if (response.isSuccessful()) {
                     Log.d("ExchangeActivity", "Intercambio creado exitosamente: " + response.body());
+                    ExchangeDTO exchangeDTO1 = response.body();
+
+                    // Redirigir a MessageActivity con el ID del intercambio
+                    Intent intent = new Intent(ExchangeActivity.this, ChatActivity.class);
+                    intent.putExtra("EXCHANGE_ID", exchangeDTO1.getId());
+                    startActivity(intent);
+                    finish();
+
                 } else {
                     Log.d("ExchangeDTO", "Exchange DTO JSON: " + new Gson().toJson(exchangeDTO));
                     Log.e("ExchangeActivity", "Error al crear el intercambio: " + response.message());

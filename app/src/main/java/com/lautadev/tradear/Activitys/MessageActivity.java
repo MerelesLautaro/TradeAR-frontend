@@ -32,7 +32,7 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.message_activity);
+        setContentView(R.layout.messages_activity);
 
         btnBack = findViewById(R.id.btn_back);
         recyclerView = findViewById(R.id.chatRecycleView);

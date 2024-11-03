@@ -1,5 +1,6 @@
 package com.lautadev.tradear.Adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.lautadev.tradear.Activitys.ChatActivity;
 import com.lautadev.tradear.R;
 import com.lautadev.tradear.dto.ExchangeDTO;
 
@@ -43,6 +45,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                 .load(exchangeDTO.getItemRequested().get(0).getLink())
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(100)))
                 .into(holder.pictureItemRequested);
+
+        // Pasar el chat seleccionado a la otra activity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), ChatActivity.class);
+            intent.putExtra("EXCHANGE_ID", exchangeDTO.getId());
+            holder.itemView.getContext().startActivity(intent);
+        });
 
     }
 

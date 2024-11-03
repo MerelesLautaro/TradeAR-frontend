@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 public class Message {
     private Long id;
     private String content;
-    private LocalDateTime timestamp;
+    private String timestamp;
     private UserSec sender;
     private Chat chat;
 
     public Message() {
     }
 
-    public Message(Long id, String content, LocalDateTime timestamp, UserSec sender, Chat chat) {
+    public Message(Long id, String content, String timestamp, UserSec sender, Chat chat) {
         this.id = id;
         this.content = content;
         this.timestamp = timestamp;
@@ -36,11 +36,11 @@ public class Message {
         this.content = content;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 

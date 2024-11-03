@@ -1,7 +1,6 @@
 package com.lautadev.tradear.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ItemDTO implements Serializable {
     private Long id;

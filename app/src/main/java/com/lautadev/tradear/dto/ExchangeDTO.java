@@ -2,7 +2,6 @@ package com.lautadev.tradear.dto;
 
 import com.lautadev.tradear.model.Status;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class ExchangeDTO {

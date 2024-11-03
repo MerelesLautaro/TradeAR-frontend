@@ -1,7 +1,6 @@
 package com.lautadev.tradear.Activitys;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,22 +18,16 @@ import com.google.gson.Gson;
 import com.lautadev.tradear.R;
 import com.lautadev.tradear.dto.ExchangeDTO;
 import com.lautadev.tradear.dto.ItemDTO;
-import com.lautadev.tradear.dto.UserSecDTO;
 import com.lautadev.tradear.fragments.ProfileFragment;
-import com.lautadev.tradear.model.Exchange;
 import com.lautadev.tradear.network.RetrofitClient;
 import com.lautadev.tradear.repository.ExchangeAPIClient;
 import com.lautadev.tradear.repository.ItemAPIClient;
 import com.lautadev.tradear.utils.OnItemsSelectedListener;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -197,8 +190,6 @@ public class ExchangeActivity extends AppCompatActivity implements OnItemsSelect
         textUser.setText(item.getUserSecDTO().getName()+" "+item.getUserSecDTO().getLastname());
         textNameItem.setText(item.getName());
         textDescription.setText(item.getDescription());
-       //SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        //String formattedDate = formatter.format(item.getDate());
         textDate.setText(item.getDate());
     }
 

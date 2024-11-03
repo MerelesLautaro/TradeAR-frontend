@@ -1,6 +1,5 @@
 package com.lautadev.tradear.Activitys;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,12 +15,6 @@ import com.lautadev.tradear.R;
 import com.lautadev.tradear.dto.ItemDTO;
 import com.lautadev.tradear.network.RetrofitClient;
 import com.lautadev.tradear.repository.ItemAPIClient;
-
-
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,8 +78,6 @@ public class PostingActivity extends AppCompatActivity {
 
         textNameItem.setText(itemDTO.getName());
         textDescription.setText(itemDTO.getDescription());
-        //SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        //String formattedDate = formatter.format(itemDTO.getDate());
         textDate.setText(itemDTO.getDate());
 
     }

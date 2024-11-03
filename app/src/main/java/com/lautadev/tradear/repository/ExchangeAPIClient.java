@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ExchangeAPIClient {
     @POST("/exchange/save")
@@ -22,6 +23,9 @@ public interface ExchangeAPIClient {
 
     @GET("/exchange/get/{id}")
     Call<ExchangeDTO> findExchange(@Path("id") Long id);
+
+    @GET("/exchange/get/my-exchanges")
+    Call<List<ExchangeDTO>> myExchanges(@Query("email") String email);
 
     @DELETE("/exchange/delete/{id}")
     Call<String> deleteExchange(@Path("id") Long id);

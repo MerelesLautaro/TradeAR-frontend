@@ -7,7 +7,7 @@ public class ItemDTO implements Serializable {
     private Long id;
     private String name;
     private String description;
-    private Date date;
+    private String date;
     private String link;
     private int amount;
     private String category;
@@ -16,7 +16,7 @@ public class ItemDTO implements Serializable {
     public ItemDTO() {
     }
 
-    public ItemDTO(Long id, String name, String description, Date date, String link, int amount, String category, UserSecDTO userSecDTO) {
+    public ItemDTO(Long id, String name, String description, String date, String link, int amount, String category, UserSecDTO userSecDTO) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -51,11 +51,11 @@ public class ItemDTO implements Serializable {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

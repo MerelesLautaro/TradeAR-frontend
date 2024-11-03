@@ -1,6 +1,7 @@
 package com.lautadev.tradear.Activitys;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,14 +13,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.lautadev.tradear.R;
+import com.lautadev.tradear.dto.ExchangeDTO;
 import com.lautadev.tradear.dto.ItemDTO;
+import com.lautadev.tradear.dto.UserSecDTO;
 import com.lautadev.tradear.fragments.ProfileFragment;
+import com.lautadev.tradear.model.Exchange;
 import com.lautadev.tradear.network.RetrofitClient;
+import com.lautadev.tradear.repository.ExchangeAPIClient;
 import com.lautadev.tradear.repository.ItemAPIClient;
 import com.lautadev.tradear.utils.OnItemsSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -68,6 +79,80 @@ public class ExchangeActivity extends AppCompatActivity implements OnItemsSelect
 
         btnExchange = findViewById(R.id.btn_tradear);
 
+        btnExchange.setOnClickListener(v -> {
+            // Obtener el fragmento actual
+            ProfileFragment profileFragment = (ProfileFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if (profileFragment != null) {
+                // Items del inventario del usuario seleccionados para el tradeo.
+                List<ItemDTO> selectedItems = profileFragment.getSelectedItems();
+                Log.d("ExchangeActivity", "Items seleccionados: " + selectedItems);
+
+                createExchange(selectedItems,itemId);
+
+            }
+        });
+
+
+    }
+
+    private void createExchange(List<ItemDTO> selectedItems, Long itemId){
+
+        ItemAPIClient itemAPIClient = RetrofitClient.getClient().create(ItemAPIClient.class);
+        Call<ItemDTO> call = itemAPIClient.findItem(itemId);
+        call.enqueue(new Callback<ItemDTO>() {
+            @Override
+            public void onResponse(Call<ItemDTO> call, Response<ItemDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ItemDTO item = response.body();
+
+                    List<ItemDTO> itemDTOSRequested = new ArrayList<>();
+                    itemDTOSRequested.add(item);
+
+                    ExchangeDTO exchangeDTO = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        exchangeDTO = new ExchangeDTO(
+                                null,
+                                LocalDateTime.now().toString(),
+                                selectedItems,
+                                itemDTOSRequested,
+                                selectedItems.get(0).getUserSecDTO(),
+                                item.getUserSecDTO(),
+                                null,
+                                null
+                        );
+                    }
+
+                    saveExchange(exchangeDTO);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ItemDTO> call, Throwable t) {
+                Log.e("ExchangeActivity", "Error en la llamada a la API", t);
+            }
+        });
+
+    }
+
+    private void saveExchange(ExchangeDTO exchangeDTO) {
+        ExchangeAPIClient exchangeAPIClient = RetrofitClient.getClient().create(ExchangeAPIClient.class);
+        Call<ExchangeDTO> call = exchangeAPIClient.saveExchange(exchangeDTO);
+        call.enqueue(new Callback<ExchangeDTO>() {
+            @Override
+            public void onResponse(Call<ExchangeDTO> call, Response<ExchangeDTO> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ExchangeActivity", "Intercambio creado exitosamente: " + response.body());
+                } else {
+                    Log.d("ExchangeDTO", "Exchange DTO JSON: " + new Gson().toJson(exchangeDTO));
+                    Log.e("ExchangeActivity", "Error al crear el intercambio: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExchangeDTO> call, Throwable t) {
+                Log.e("ExchangeActivity", "Error en la llamada a la API para crear el intercambio", t);
+            }
+        });
     }
 
     private void loadItemDetails(long itemId) {
@@ -84,7 +169,7 @@ public class ExchangeActivity extends AppCompatActivity implements OnItemsSelect
 
             @Override
             public void onFailure(Call<ItemDTO> call, Throwable t) {
-                Log.e("PostingActivity", "Error en la llamada a la API", t);
+                Log.e("ExchangeActivity", "Error en la llamada a la API", t);
             }
         });
     }
@@ -104,9 +189,9 @@ public class ExchangeActivity extends AppCompatActivity implements OnItemsSelect
         textUser.setText(item.getUserSecDTO().getName()+" "+item.getUserSecDTO().getLastname());
         textNameItem.setText(item.getName());
         textDescription.setText(item.getDescription());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        String formattedDate = formatter.format(item.getDate());
-        textDate.setText(formattedDate);
+       //SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        //String formattedDate = formatter.format(item.getDate());
+        textDate.setText(item.getDate());
     }
 
     @Override

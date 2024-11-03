@@ -46,9 +46,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         holder.txtNameItem.setText(itemDTO.getName());
 
         // Formatear la fecha usando SimpleDateFormat
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        String formattedDate = formatter.format(itemDTO.getDate());
-        holder.textDate.setText(formattedDate);
+       // SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+       // String formattedDate = formatter.format(itemDTO.getDate());
+        holder.textDate.setText(itemDTO.getDate());
 
         // Configurar el listener para el botón "btnExchange"
         holder.btnExchange.setOnClickListener(v -> {

@@ -1,11 +1,12 @@
 package com.lautadev.tradear.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Exchange {
     private Long id;
-    private LocalDate date;
+    private LocalDateTime date;
     private List<Item> itemOffered;
     private List<Item> itemRequested;
     private UserSec issuingUser;
@@ -16,7 +17,7 @@ public class Exchange {
     public Exchange() {
     }
 
-    public Exchange(Long id, LocalDate date, List<Item> itemOffered, List<Item> itemRequested, UserSec issuingUser, UserSec receivingUser, Status status, Chat chat) {
+    public Exchange(Long id, LocalDateTime date, List<Item> itemOffered, List<Item> itemRequested, UserSec issuingUser, UserSec receivingUser, Status status, Chat chat) {
         this.id = id;
         this.date = date;
         this.itemOffered = itemOffered;
@@ -35,11 +36,11 @@ public class Exchange {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

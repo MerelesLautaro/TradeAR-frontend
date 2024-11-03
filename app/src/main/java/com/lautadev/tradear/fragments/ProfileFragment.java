@@ -89,4 +89,8 @@ public class ProfileFragment extends Fragment {
             imageGridAdapter.notifyDataSetChanged();
         }
     }
+
+    public List<ItemDTO> getSelectedItems() {
+        return imageGridAdapter != null ? imageGridAdapter.getSelectedItems() : new ArrayList<>();
+    }
 }

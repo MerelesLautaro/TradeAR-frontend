@@ -85,9 +85,9 @@ public class PostingActivity extends AppCompatActivity {
 
         textNameItem.setText(itemDTO.getName());
         textDescription.setText(itemDTO.getDescription());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        String formattedDate = formatter.format(itemDTO.getDate());
-        textDate.setText(formattedDate);
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        //String formattedDate = formatter.format(itemDTO.getDate());
+        textDate.setText(itemDTO.getDate());
 
     }
 }

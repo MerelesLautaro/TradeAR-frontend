@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,12 +18,24 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.lautadev.tradear.Adapters.MessageAdapter;
 import com.lautadev.tradear.R;
+import com.lautadev.tradear.dto.ChatDTO;
 import com.lautadev.tradear.dto.ExchangeDTO;
 import com.lautadev.tradear.dto.MessageDTO;
+import com.lautadev.tradear.dto.SendMessageDTO;
+import com.lautadev.tradear.dto.UserSecDTO;
+import com.lautadev.tradear.model.Chat;
+import com.lautadev.tradear.model.Message;
+import com.lautadev.tradear.model.UserSec;
 import com.lautadev.tradear.network.RetrofitClient;
+import com.lautadev.tradear.repository.ChatAPIClient;
 import com.lautadev.tradear.repository.ExchangeAPIClient;
+import com.lautadev.tradear.repository.MessageAPIClient;
+import com.lautadev.tradear.repository.UserSecAPIClient;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +43,8 @@ import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private Button btnBack;
+    private Button btnBack, btnSendMessage;
+
     private long exchangeId;
 
     @Override
@@ -51,6 +65,13 @@ public class ChatActivity extends AppCompatActivity {
         if (exchangeId != -1) {
             loadChat(exchangeId);
         }
+
+        btnSendMessage = findViewById(R.id.btnSendMessage);
+
+        btnSendMessage.setOnClickListener(v -> {
+            sendMessage();
+        });
+
     }
 
     private void loadChat(long exchangeId){
@@ -63,6 +84,71 @@ public class ChatActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     ExchangeDTO exchangeDTO = response.body();
                     updateUI(exchangeDTO);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExchangeDTO> call, Throwable t) {
+                Log.e("ChatActivity", "Error en la llamada a la API", t);
+            }
+        });
+    }
+
+    private void sendMessage() {
+        EditText inputTextMessage = findViewById(R.id.inputTextMessage);
+        String messageContent = inputTextMessage.getText().toString().trim();
+
+        if (messageContent.isEmpty()) {
+            return;
+        }
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        Long userId = sharedPreferences.getLong("userId", -1);
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        // Obtener el exchangeDTO para acceder al chat
+        ExchangeAPIClient exchangeAPIClient = RetrofitClient.getClient().create(ExchangeAPIClient.class);
+        Call<ExchangeDTO> exchangeCall = exchangeAPIClient.findExchange(exchangeId);
+
+        exchangeCall.enqueue(new Callback<ExchangeDTO>() {
+            @Override
+            public void onResponse(Call<ExchangeDTO> call, Response<ExchangeDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ExchangeDTO exchangeDTO = response.body();
+                    long chatId = exchangeDTO.getChat().getId();
+
+                    // Crear el DTO para enviar el mensaje
+                    SendMessageDTO sendMessageDTO = new SendMessageDTO(
+                            null,
+                            messageContent,
+                            timestamp,
+                            userId,
+                            chatId
+                    );
+
+                    // Llamar al endpoint para guardar el mensaje
+                    MessageAPIClient messageAPIClient = RetrofitClient.getClient().create(MessageAPIClient.class);
+                    Call<MessageDTO> messageCall = messageAPIClient.saveMessage(sendMessageDTO);
+
+                    messageCall.enqueue(new Callback<MessageDTO>() {
+                        @Override
+                        public void onResponse(Call<MessageDTO> call, Response<MessageDTO> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                // Limpiar el EditText
+                                inputTextMessage.setText("");
+                                loadChat(exchangeId);
+                            } else {
+                                Log.e("ChatActivity", "Error al guardar el mensaje");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MessageDTO> call, Throwable t) {
+                            Log.e("ChatActivity", "Error al enviar el mensaje", t);
+                        }
+                    });
+                } else {
+                    Log.e("ChatActivity", "Error al obtener el exchange");
                 }
             }
 

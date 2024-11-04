@@ -24,6 +24,9 @@ public interface UserSecAPIClient {
     @GET("/user/get/{id}")
     Call<UserSecDTO> findUser(@Path("id") Long id);
 
+    @GET("/user/get/user-entity/{id}")
+    Call<UserSec> findUserEntity(@Path("id") Long id);
+
     @GET("/user/get/findByEmail")
     Call<UserSecDTO> findUserByEmail(@Query("email") String email);
 
